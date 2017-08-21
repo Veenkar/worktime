@@ -56,6 +56,14 @@ Worktime::Worktime(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    QString filename = "data.txt";
+    QFile file(filename);
+    if (file.open(QIODevice::ReadOnly)) {
+        QByteArray content = file.readAll();
+        ui->textEdit->setText(content);
+        file.close();
+    }
+
     //cfg
     INACTIVE_DELAY = QTime(0, 15, 0);
 
@@ -99,6 +107,7 @@ bool Worktime::writeToLog(const QString &str)
     if (file.open(QIODevice::Append)) {
         QTextStream stream(&file);
         stream << str << endl;
+        ui->textEdit->append(str+"\n");
         file.close();
     }
 }
